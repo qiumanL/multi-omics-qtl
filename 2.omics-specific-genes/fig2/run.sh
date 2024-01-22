@@ -1,0 +1,1 @@
+Rscript tu.r ENSG00000102595 UGGT2
