@@ -1,4 +1,5 @@
 Code repository related to manuscript "The impact of common variants on gene expression in the human brain: from RNA to protein to schizophrenia risk."
+
 Following the run.sh in each content to run the code.
 
 # Requirements
