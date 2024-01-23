@@ -5,7 +5,7 @@ Following the run.sh in each content to run the code.
 
 ## softwares
 
-     **QTLTools** v1.3.1 https://qtltools.github.io/qtltools/
+     QTLTools v1.3.1 https://qtltools.github.io/qtltools/
      GNU parallel 20131022 https://ftp.gnu.org/gnu/parallel/ (if you use job scheduling system, like PBS, slurm, just leave this software)
      MESC https://github.com/douglasyao/mesc/wiki
      PLINK v1.90p https://www.cog-genomics.org/plink2/
