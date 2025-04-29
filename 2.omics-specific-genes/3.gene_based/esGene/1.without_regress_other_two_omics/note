@@ -1,0 +1,11 @@
+
+## build prediction models
+parallel -j 20 Rscript scr/model_training.r {} \&\> log/model_training.{} ::: {1..75}
+Rscript scr/weights_cov.r 
+
+## predict gene expression to get GReX
+python PrediXcan.py --predict --dosages data/ --dosages_prefix genotypes.sub.addCM --samples sample.order.fmt --weights output/braingvex.db --output_prefix output/braingvex.predict
+cat output/braingvex.predict_predicted_expression.txt |cut -f2- > output/braingvex.predict_predicted_expression.txt2
+
+cd output
+python3 writeWeights.py

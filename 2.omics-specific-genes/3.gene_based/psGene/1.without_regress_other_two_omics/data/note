@@ -1,0 +1,9 @@
+cat 1.QTL/shared_sample_shared_genes/pQTL/expression/sub.expr.gene |sed -e'1s/^gene/geneid/' -e'1s/\t/\tX/g' -e'1s/-/./g' > sub.expr
+sed -i 's/^\t/geneid\t/g' sub.expr
+
+ln -s genotypes.sub.addCM.* .
+
+## check header
+awk -F "\t" 'NR==1{for(i=2;i<=NF;i++){print $i}}' sub.expr.resid >sample.order
+awk -F "\t" '{print $1"\t"$2}' sample.order >sample.order.fmt 
+

@@ -1,0 +1,13 @@
+Rscript merge.r 
+### NA means no genetic effect on that gene in that omics
+### we want to get the xsGenes with no genetic effect in other two omics, and not in MHC region
+awk -F "\t" 'FNR==1||$7=="NA"&&$8!="NA"&&$9=="NA"{print}' braingvex.db.extra.sig.with_other_omics.corr.r2.txt >braingvex.db.extra.sig.specific.temp
+awk -F "\t" 'ARGIND==1{split($4,a,".");x[a[1]]++}ARGIND==2{if(!($1 in x)||FNR==1){print}}' gene.MHC.bed braingvex.db.extra.sig.specific.temp >braingvex.db.extra.sig.specific.txt
+
+
+###
+awk -F "\t" '{if(FNR==1){print}if($8!="NA"&&($7!="NA"||$9!="NA")){print}}' braingvex.db.extra.sig.with_other_omics.corr.r2.txt >braingvex.db.extra.sig.not_specific.temp
+awk -F "\t" 'ARGIND==1{split($4,a,".");x[a[1]]++}ARGIND==2{if(!($1 in x)||FNR==1){print}}' gene.MHC.bed braingvex.db.extra.sig.not_specific.temp >gene.MHC.bed braingvex.db.extra.sig.not_specific.txt
+
+#### some rsGenes are NA without regress out the other two omics signals, so they don't belong to specific or not specific
+

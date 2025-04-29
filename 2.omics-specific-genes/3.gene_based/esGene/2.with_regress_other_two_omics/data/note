@@ -1,0 +1,10 @@
+Rscript conditional.lm.R eQTL
+sed -i 's/^\t/geneid\t/g' sub.expr.resid
+
+ln -s genotypes.sub.addCM.* .
+
+## check header
+awk -F "\t" 'NR==1{for(i=2;i<=NF;i++){print $i}}' sub.expr.resid >sample.order
+paste -d'\t' without_regress_other_two_omics/data/sample.order sample.order >sample.order.fmt
+awk -F "\t" '$1!=$2{print}' sample.order.fmt 
+

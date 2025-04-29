@@ -1,0 +1,16 @@
+### get the nominal xQTLs for rsQTL
+awk 'ARGIND==1{a[$1$8]++}ARGIND==2{if($1$8 in a){print}}' ../permute_qtl/rqtl.permute.qvalue.rsqtl.txt <(zcat eqtl.nominal.allpair.qvalue.txt.gz) >eqtl.nominal.qvalue.txt.rsQTL
+awk 'ARGIND==1{a[$1$8]++}ARGIND==2{if($1$8 in a){print}}' ../permute_qtl/rqtl.permute.qvalue.rsqtl.txt <(zcat rqtl.nominal.allpair.qvalue.txt.gz) >rqtl.nominal.qvalue.txt.rsQTL
+awk 'ARGIND==1{a[$1$8]++}ARGIND==2{split($1,x,"|");if(x[1]$8 in a){print}}' ../permute_qtl/rqtl.permute.qvalue.rsqtl.txt <(zcat pqtl.nominal.allpair.qvalue.txt.gz) >pqtl.nominal.qvalue.txt.rsQTL
+
+### merge the nominal xQTLs for rsQTL
+Rscript merge.r
+
+
+### filter the rsQTL if their nominal Pvalue < 0.01 in eQTL and pQTL
+awk -F "\t" '$3+0>0.01&&$11+0>0.01||FNR==1{print}' rsqtl.with_other_omics.txt >rsqtl.with_other_omics.nosmallerP
+
+## get the kept rsQTL file
+awk -F "\t" 'ARGIND==1{a[$1$2]++}ARGIND==2{if($1$8 in a){print}}' rsqtl.with_other_omics.nosmallerP ../permute_qtl/rqtl.permute.qvalue.rsqtl.txt >rqtl.permute.qvalue.rsqtl.txt
+
+
