@@ -30,3 +30,9 @@ listed in datasets name, download link
      GTEx BA9 eQTL https://storage.googleapis.com/adult-gtex/bulk-qtl/v7/single-tissue-cis-qtl/all_snp_gene_associations/Brain_Frontal_Cortex_BA9.allpairs.txt.gz 
      schizophrenia GWAS PGC3 https://figshare.com/articles/dataset/PGC3_SCZ_wave3_public_v2_GRCh37/19175744/1
      1000 Genome http://hgdownload.cse.ucsc.edu/gbdb/hg19/1000Genomes/phase3/
+
+## files and results
+
+     https://www.synapse.org/Synapse:syn50698163/files/
+
+     
