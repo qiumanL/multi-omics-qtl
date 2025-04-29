@@ -1,0 +1,35 @@
+Rscript Protein_processing.cpm.all.R
+
+awk 'BEGIN{FS="\t"}NR==FNR{for(i=2;i<=NF;i++) a[$i]++}NR>FNR&&($1 in a){print $1}' <(head -1 log2prot.fgene.fsample.qn) <(awk '{print $1}' merge2.WGS-PsychChip-affy.fam) |sort -u > overlapSample.DNA-protein.uniq
+
+########### sub.exp.bed after regressed covariates
+awk '
+    BEGIN{FS="\t";OFS="\t"}
+    NR==FNR{a[$1]=1}
+    NR>FNR&&FNR==1{
+        printf("Expression")
+        for(i=2;i<=NF;i++){if(($i in a)&&!($i in b)){b[$i]=1;ind[i]=1;printf("\t"$i)}}
+        printf("\n")
+    }
+    NR>FNR&&FNR>1{
+        printf($1)
+        for(i=2;i<=NF;i++){if(i in ind){printf("\t"$i)}}
+        printf("\n")
+    }
+' overlapSample.DNA-protein.uniq log2prot.fgene.fsample.qn.lmPEER19.norm > log2prot.fgene.fsample.qn.lmPEER19.norm.sub
+
+## QTLtools exp bed gene level
+awk '
+    BEGIN{FS="\t";OFS="\t"}
+    ARGIND==1&&$5=="gene"{split($7,s,".");hgnc2pos[$11]=$1"\t"$2-1"\t"$3;hgnc2ensg[$11]=s[1];hgnc2strand[$11]=$6}
+    ARGIND==2&&FNR>1&&$4!~/^#/&&($5 in hgnc2ensg){prot2hgnc[$4]=$5}
+    ARGIND==3&&FNR==1{$1="#chr\tstart\tend\tprotein\tgene\tstrand";print $0}
+    ARGIND==3&&FNR>1&&($1 in prot2hgnc){hgnc=prot2hgnc[$1];$1=hgnc2pos[hgnc]"\t"hgnc2ensg[hgnc]"|"$1"\t"hgnc2ensg[hgnc]"\t"hgnc2strand[hgnc];print $0}
+' <(zcat gencode.v19.annotation.gz) Final_proteomics_data_v4.txt log2prot.fgene.fsample.qn.lmPEER19.norm.sub |sed -e's/^chr//' |awk 'NR==1;NR>1{print $0 | "LC_ALL=C sort -Vk1 -k2,2n"}' |bgzip > log2prot.fgene.fsample.qn.lmPEER19.norm.sub.prot2gene.bed.gz
+tabix -p bed log2prot.fgene.fsample.qn.lmPEER19.norm.sub.prot2gene.bed.gz
+
+## split by chr
+parallel -j 24 tabix log2prot.fgene.fsample.qn.lmPEER19.norm.sub.prot2gene.bed.gz {} -h \|bgzip \> log2prot.fgene.fsample.qn.lmPEER19.norm.sub.prot2gene.chr{}.bed.gz ::: {1..22} 
+for i in {1..22}; do tabix -p bed log2prot.fgene.fsample.qn.lmPEER19.norm.sub.prot2gene.chr$i.bed.gz; done
+
+

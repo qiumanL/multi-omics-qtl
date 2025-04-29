@@ -1,0 +1,8 @@
+
+awk -F "[ \t]+" 'ARGIND==1{a[$1$2]=$3}ARGIND==2{if($1$8 in a){print $1"\t"$8"\t"$14}}' CMC.eQTL.besthit.txt <(zcat eqtl.nominal.allpair.qvalue.txt.gz) >eqtl.txt
+
+awk -F "[ \t]+" 'ARGIND==1{a[$1$2]=$3}ARGIND==2{if($1$8 in a){print $1"\t"$8"\t"$14}}' CMC.eQTL.besthit.txt <(zcat rqtl.nominal.allpair.qvalue.txt.gz) >rqtl.txt
+
+
+awk -F "[ \t]+" 'ARGIND==1{a[$1$2]=$3}ARGIND==2{split($1,x,"|");if(x[1]$8 in a){print $1"\t"$8"\t"$14}}' CMC.eQTL.besthit.txt <(zcat pqtl.norminal.allpair.qvalue.txt.gz) >pqtl.txt
+

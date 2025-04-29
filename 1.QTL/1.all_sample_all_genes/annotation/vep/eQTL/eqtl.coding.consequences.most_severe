@@ -1,0 +1,6 @@
+QTL	Consequence type	Count	Percent
+eQTL	stop_gained	6	1.42857
+eQTL	stop_lost	1	0.238095
+eQTL	missense_variant	195	46.4286
+eQTL	stop_retained_variant	2	0.47619
+eQTL	synonymous_variant	216	51.4286

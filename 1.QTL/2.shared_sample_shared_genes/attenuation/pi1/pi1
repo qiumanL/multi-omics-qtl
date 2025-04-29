@@ -1,0 +1,10 @@
+replicate	discovery	pi1
+eQTL	eQTL	
+eQTL	rQTL	0.847
+eQTL	pQTL	0.759
+rQTL	eQTL	0.602
+rQTL	rQTL	
+rQTL	pQTL	0.820
+pQTL	eQTL	0.340
+pQTL	rQTL	0.569
+pQTL	pQTL	
